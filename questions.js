@@ -32,6 +32,8 @@ var timer = document.querySelector("#timer");
 
 var quizButton = document.querySelector("#quizButton");
 
+var highscoreButton = document.querySelector("#highscoreButton");
+
 var quizBox = document.querySelector("#quizBox");
 
 var interval;
@@ -47,10 +49,11 @@ quizButton.addEventListener("click", function(event) {
   }
 
   quizBox.innerHTML = "";
-  var question = document.createElement("p");
-  question.setAttribute("class", "text-center");
-  question.textContent = questions[0].title;
-  quizBox.appendChild(question);
+
+  var question1 = document.createElement("h3");
+  question1.setAttribute("class", "text-center");
+  question1.textContent = questions[0].title;
+  quizBox1.appendChild(question);
 
   var choice1 = document.createElement("button");
   choice1.setAttribute("type", "button");
@@ -81,4 +84,18 @@ quizButton.addEventListener("click", function(event) {
   choice4.setAttribute("class", "btn btn-secondary");
   choice4.textContent = questions[0].choices[3];
   quizBox.appendChild(choice4);
+});
+
+highscoreButton.addEventListener("click", function(event) {
+  event.preventDefault();
+
+  quizBox.innerHTML = "";
+
+  var highscoreTitle = document.createElement("h2");
+  highscoreTitle.setAttribute("class", "text-center");
+  highscoreTitle.textContent = "High Scores";
+  quizBox.appendChild(highscoreTitle);
+
+  var space = document.createElement("vr");
+  quizBox.appendChild(space);
 });
