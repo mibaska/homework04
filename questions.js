@@ -26,7 +26,7 @@ var questions = [
   }
 ];
 
-var quizTime = questions.length * 15;
+var quizTime = 0;
 
 var timer = document.querySelector("#timer");
 
@@ -51,26 +51,36 @@ var interval;
 var i = -1;
 
 var score = 0;
+var antiScore = 0;
+
+var initials = "AA";
+
+var highscore;
+
+interval = setInterval(countdown, 1000);
+function countdown() {
+  if(quizTime > 0) {
+    quizTime--;
+    timer.textContent = "Time: " + quizTime;
+  } else {
+    timer.textContent = "Time: 0";
+  }
+}
 
 quizButton.addEventListener("click", function(event) {
   event.preventDefault();
 
-  timer.textContent = "Time: " + quizTime;
-  interval = setInterval(countdown, 1000);
-  function countdown() {
-    if(quizTime > 0) {
-      quizTime--;
-      timer.textContent = "Time: " + quizTime;
-    } else if(quizTime = 0) {
-      alert("Time's Up!");
-      break;
-    }
+  if (antiScore > 0) {
+    quizTime = 10;
+  } else {
+    quizTime = 20;
   }
+  timer.textContent = "Time: " + quizTime;
 
   quizBox.innerHTML = "";
   i++;
 
-  if(i < 6) {
+  if(i < 5) {
     var question = document.createElement("h3");
     question.setAttribute("class", "text-center");
     question.textContent = questions[i].title;
@@ -90,11 +100,12 @@ quizButton.addEventListener("click", function(event) {
       if (questions[i].choices[0] === questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
+        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
+        antiScore = 1;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -114,11 +125,12 @@ quizButton.addEventListener("click", function(event) {
       if (questions[i].choices[1] == questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
+        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
+        antiScore = 1;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -138,11 +150,12 @@ quizButton.addEventListener("click", function(event) {
       if (questions[i].choices[2] == questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
+        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
+        antiScore = 1;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -160,11 +173,12 @@ quizButton.addEventListener("click", function(event) {
       if (questions[i].choices[3] == questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
+        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
+        antiScore = 1;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -178,22 +192,73 @@ quizButton.addEventListener("click", function(event) {
 
       choiceInput.innerHTML = "";
       nextButton.innerHTML = "";
-
-      quizBox.removeChild(choiceInput);
-      quizBox.removeChild(nextButton);
     });
   } else {
+    quizTime = 0;
     quizBox.innerHTML = "";
+
     var result = document.createElement("p");
+    result.setAttribute("class", "text-center");
     result.textContent = "Final Score: " + score;
     quizBox.appendChild(result);
+    
+    var intitialInputDivDiv = document.createElement("div");
+    intitialInputDivDiv.setAttribute("class", "input-group mb-3");
+    quizBox.appendChild(intitialInputDivDiv);
+
+    var intitialInput = document.createElement("input");
+    intitialInput.setAttribute("type", "text");
+    intitialInput.setAttribute("class", "form-control");
+    intitialInput.setAttribute("placeholder", "Enter Initials");
+    intitialInput.setAttribute("aria-label", "Enter Initials");
+    intitialInput.setAttribute("aria-describedby", "button-addon2");
+    intitialInput.setAttribute("id", "initialInput")
+    intitialInputDivDiv.appendChild(intitialInput);
+
+    var intitialInputDiv = document.createElement("div");
+    intitialInputDiv.setAttribute("class", "input-group-append");
+    intitialInputDivDiv.appendChild(intitialInputDiv);
+
+    var intitialInputButton = document.createElement("button");
+    intitialInputButton.setAttribute("class", "btn btn-secondary");
+    intitialInputButton.setAttribute("type", "button");
+    intitialInputButton.setAttribute("id", "button-addon2");
+    intitialInputButton.textContent ="Enter";
+    intitialInputDiv.appendChild(intitialInputButton);
+
+    intitialInputButton.addEventListener("click", function(event) {
+      event.preventDefault();
+
+      initials = document.querySelector("#initialInput").value;
+      console.log(initials + ": " + score);
+
+      var highscoreInitials = initials;
+      localStorage.setItem("initials", highscoreInitials);
+
+      highscore = score;
+      localStorage.setItem("highscore", highscore);
+    });
   }
 });
 
 highscoreButton.addEventListener("click", function(event) {
   event.preventDefault();
 
+  var highscoreFinal = localStorage.getItem("highscore");
+  if(highscoreFinal !== null) {
+    if(highscore > highscoreFinal) {
+      localStorage.setItem("highscore", highscore);
+    }
+  } else {
+    localStorage.setItem("highscore", highscore);
+  }
+
+  var initialsFinal = localStorage.getItem("initials");
+
   quizBox.innerHTML = "";
+
+  i = -1;
+  score = 0;
 
   quizTime = 0;
   timer.textContent = "Time: 0";
@@ -202,6 +267,14 @@ highscoreButton.addEventListener("click", function(event) {
   highscoreTitle.setAttribute("class", "text-center");
   highscoreTitle.textContent = "High Scores";
   quizBox.appendChild(highscoreTitle);
+
+  var scoreDiv = document.createElement("div");
+  quizBox.appendChild(scoreDiv);
+
+  var scoreLine = document.createElement("p");
+  scoreLine.setAttribute("class", "text-center");
+  scoreLine.textContent = initialsFinal + ": " + highscoreFinal;
+  scoreDiv.appendChild(scoreLine);
 
   var back = document.createElement("button");
   back.setAttribute("type", "button");
@@ -268,9 +341,10 @@ highscoreButton.addEventListener("click", function(event) {
     col2.appendChild(startTitle);
 
     var startText = document.createElement("p");
-    startText.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind incorrect answers will penalize your score/time by ten seconds!";
+    startText.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind incorrect answers will penalize your time by ten seconds!";
     col5.appendChild(startText);
 
+    quizButton.textContent ="Start Quiz";
     col8.appendChild(quizButton);
   });
 
