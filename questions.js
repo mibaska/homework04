@@ -26,7 +26,7 @@ var questions = [
   }
 ];
 
-var quizTime = 0;
+var quizTime = questions.length * 15;
 
 var timer = document.querySelector("#timer");
 
@@ -42,6 +42,9 @@ correctChoice.textContent = "Correct!";
 var wrongChoice = document.createElement("p");
 wrongChoice.textContent = "Wrong!";
 
+var failMessage = document.createElement("p");
+failMessage.textContent = "Quiz Failed!"
+
 var choiceInput = document.createElement("div");
 
 var nextButton = document.createElement("div");
@@ -51,31 +54,73 @@ var interval;
 var i = -1;
 
 var score = 0;
-var antiScore = 0;
+var highscore = 0;
 
 var initials = "AA";
 
 var highscore;
 
-interval = setInterval(countdown, 1000);
-function countdown() {
-  if(quizTime > 0) {
-    quizTime--;
-    timer.textContent = "Time: " + quizTime;
-  } else {
-    timer.textContent = "Time: 0";
-  }
-}
+var quizStart = 0;
+console.log(quizStart);
+
+var result = document.createElement("p");
+var intitialInputDivDiv = document.createElement("div");
+var intitialInput = document.createElement("input");
+var intitialInputDiv = document.createElement("div");
+var intitialInputButton = document.createElement("button");
+var highscoreInitials = initials;
+
+var failure = document.createElement("button");
+failure.setAttribute("type", "button");
+failure.setAttribute("class", "btn btn-secondary");
+failure.textContent = "Click to Try Again";
+
+failure.addEventListener("click", function(event) {
+  event.preventDefault();
+
+  quizTime = questions.length * 15;
+  score = 0;
+  i = 0;
+});
 
 quizButton.addEventListener("click", function(event) {
   event.preventDefault();
 
-  if (antiScore > 0) {
-    quizTime = 10;
-  } else {
-    quizTime = 20;
+  console.log(i);
+  quizStart = 1;
+  function clock() {
+    if(quizTime > 0) {
+      interval = setInterval(countdown,1000);
+      function countdown() {
+        if(quizTime > 0) {
+          quizTime--;
+          timer.textContent = "Time: " + quizTime;
+          console.log(quizTime);
+        } else {
+          choiceInput.appendChild(failMessage);
+          nextButton.appendChild(failure);
+          quizTime = 0;
+          timer.textContent = "Time: 0";
+        }
+      }
+    }
   }
-  timer.textContent = "Time: " + quizTime;
+  clock();
+
+  if(i > -1) {
+    function anticlock() {
+      if(quizTime > 0) {
+        antinterval = setInterval(anticountdown,1000);
+        function anticountdown() {
+          if(quizTime > 0) {
+            quizTime++;
+            console.log(quizTime);
+          }
+        }
+      }
+    }
+    anticlock();
+  }
 
   quizBox.innerHTML = "";
   i++;
@@ -100,12 +145,11 @@ quizButton.addEventListener("click", function(event) {
       if (questions[i].choices[0] === questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
-        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        antiScore = 1;
+        quizTime = quizTime - 10;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -122,15 +166,14 @@ quizButton.addEventListener("click", function(event) {
     choice2.addEventListener("click", function(event) {
       event.preventDefault();
 
-      if (questions[i].choices[1] == questions[i].answer) {
+      if (questions[i].choices[1] === questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
-        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        antiScore = 1;
+        quizTime = quizTime - 10;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -147,15 +190,14 @@ quizButton.addEventListener("click", function(event) {
     choice3.addEventListener("click", function(event) {
       event.preventDefault();
 
-      if (questions[i].choices[2] == questions[i].answer) {
+      if (questions[i].choices[2] === questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
-        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        antiScore = 1;
+        quizTime = quizTime - 10;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -170,15 +212,14 @@ quizButton.addEventListener("click", function(event) {
     choice4.addEventListener("click", function(event) {
       event.preventDefault();
 
-      if (questions[i].choices[3] == questions[i].answer) {
+      if (questions[i].choices[3] === questions[i].answer) {
         choiceInput.appendChild(correctChoice);
         score++;
-        antiScore = 0;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       } else {
         choiceInput.appendChild(wrongChoice);
-        antiScore = 1;
+        quizTime = quizTime - 10;
         quizButton.textContent = "Next";
         nextButton.appendChild(quizButton);
       }
@@ -195,31 +236,27 @@ quizButton.addEventListener("click", function(event) {
     });
   } else {
     quizTime = 0;
+    quizStart = 0;
     quizBox.innerHTML = "";
 
-    var result = document.createElement("p");
     result.setAttribute("class", "text-center");
     result.textContent = "Final Score: " + score;
     quizBox.appendChild(result);
     
-    var intitialInputDivDiv = document.createElement("div");
     intitialInputDivDiv.setAttribute("class", "input-group mb-3");
     quizBox.appendChild(intitialInputDivDiv);
 
-    var intitialInput = document.createElement("input");
     intitialInput.setAttribute("type", "text");
     intitialInput.setAttribute("class", "form-control");
     intitialInput.setAttribute("placeholder", "Enter Initials");
     intitialInput.setAttribute("aria-label", "Enter Initials");
     intitialInput.setAttribute("aria-describedby", "button-addon2");
-    intitialInput.setAttribute("id", "initialInput")
+    intitialInput.setAttribute("id", "initialInput");
     intitialInputDivDiv.appendChild(intitialInput);
 
-    var intitialInputDiv = document.createElement("div");
     intitialInputDiv.setAttribute("class", "input-group-append");
     intitialInputDivDiv.appendChild(intitialInputDiv);
 
-    var intitialInputButton = document.createElement("button");
     intitialInputButton.setAttribute("class", "btn btn-secondary");
     intitialInputButton.setAttribute("type", "button");
     intitialInputButton.setAttribute("id", "button-addon2");
@@ -230,30 +267,26 @@ quizButton.addEventListener("click", function(event) {
       event.preventDefault();
 
       initials = document.querySelector("#initialInput").value;
+      localStorage.setItem("initials", initials);
       console.log(initials + ": " + score);
-
-      var highscoreInitials = initials;
-      localStorage.setItem("initials", highscoreInitials);
-
-      highscore = score;
-      localStorage.setItem("highscore", highscore);
-    });
+      if(highscore !== null){
+        if (score > highscore) {
+          localStorage.setItem("highscore", score);
+          return;
+        }
+      }
+      else{
+        localStorage.setItem("highscore", score);
+        return;
+      }
+      });
   }
 });
 
 highscoreButton.addEventListener("click", function(event) {
   event.preventDefault();
 
-  var highscoreFinal = localStorage.getItem("highscore");
-  if(highscoreFinal !== null) {
-    if(highscore > highscoreFinal) {
-      localStorage.setItem("highscore", highscore);
-    }
-  } else {
-    localStorage.setItem("highscore", highscore);
-  }
-
-  var initialsFinal = localStorage.getItem("initials");
+  quizStart = 0;
 
   quizBox.innerHTML = "";
 
@@ -261,7 +294,6 @@ highscoreButton.addEventListener("click", function(event) {
   score = 0;
 
   quizTime = 0;
-  timer.textContent = "Time: 0";
 
   var highscoreTitle = document.createElement("h2");
   highscoreTitle.setAttribute("class", "text-center");
@@ -271,9 +303,12 @@ highscoreButton.addEventListener("click", function(event) {
   var scoreDiv = document.createElement("div");
   quizBox.appendChild(scoreDiv);
 
+  initials = localStorage.getItem("initials");
+  highscore = localStorage.getItem("highscore");
+
   var scoreLine = document.createElement("p");
   scoreLine.setAttribute("class", "text-center");
-  scoreLine.textContent = initialsFinal + ": " + highscoreFinal;
+  scoreLine.textContent = initials + ": " + highscore;
   scoreDiv.appendChild(scoreLine);
 
   var back = document.createElement("button");
@@ -286,7 +321,11 @@ highscoreButton.addEventListener("click", function(event) {
   backButton.addEventListener("click", function(event) {
     event.preventDefault();
 
+    quizStart = 0;
+
     quizBox.innerHTML = "";
+
+    quizTime = questions.length * 15;
 
     var row1 = document.createElement("div");
     row1.setAttribute("class", "row");
@@ -354,4 +393,10 @@ highscoreButton.addEventListener("click", function(event) {
   clear.setAttribute("id", "clearButton");
   clear.textContent = "Clear Highscores";
   quizBox.appendChild(clear);
+
+  clear.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    localStorage.clear();
+  });
 });
