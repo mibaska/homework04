@@ -43,25 +43,18 @@ var wrongChoice = document.createElement("p");
 wrongChoice.textContent = "Wrong!";
 
 var failMessage = document.createElement("p");
-failMessage.textContent = "Quiz Failed!"
+failMessage.textContent = "Quiz Failed!";
 
 var choiceInput = document.createElement("div");
 
-var nextButton = document.createElement("div");
-
 var interval;
 
-var i = -1;
+var i = 0;
 
 var score = 0;
-var highscore = 0;
-
-var initials = "AA";
-
 var highscore;
 
-var quizStart = 0;
-console.log(quizStart);
+var initials = "AA";
 
 var result = document.createElement("p");
 var intitialInputDivDiv = document.createElement("div");
@@ -77,220 +70,188 @@ failure.textContent = "Click to Try Again";
 
 failure.addEventListener("click", function(event) {
   event.preventDefault();
-
-  quizTime = questions.length * 15;
-  score = 0;
-  i = 0;
+  i = 6;
+  quizWar(i);
 });
+
+var quizStart = 0;
 
 quizButton.addEventListener("click", function(event) {
   event.preventDefault();
 
-  console.log(i);
   quizStart = 1;
   function clock() {
-    if(quizTime > 0) {
-      interval = setInterval(countdown,1000);
-      function countdown() {
-        if(quizTime > 0) {
-          quizTime--;
-          timer.textContent = "Time: " + quizTime;
-          console.log(quizTime);
-        } else {
-          choiceInput.appendChild(failMessage);
-          nextButton.appendChild(failure);
-          quizTime = 0;
-          timer.textContent = "Time: 0";
+    if(quizStart === 1) {
+      if(quizTime > 0) {
+        interval = setInterval(countdown,1000);
+        function countdown() {
+          if(quizTime > 0) {
+            quizTime--;
+            timer.textContent = "Time: " + quizTime;
+          } else {
+            choiceInput.appendChild(failMessage);
+            quizTime = 0;
+            timer.textContent = "Time: 0";
+            i = 6;
+            quizWar(i);
+          }
         }
       }
     }
   }
   clock();
 
-  if(i > -1) {
-    function anticlock() {
-      if(quizTime > 0) {
-        antinterval = setInterval(anticountdown,1000);
-        function anticountdown() {
-          if(quizTime > 0) {
-            quizTime++;
-            console.log(quizTime);
+  function quizWar(i) {
+    if(i < 5) {
+      quizBox.innerHTML = "";
+      var question = document.createElement("h3");
+      question.setAttribute("class", "text-center");
+      question.textContent = questions[i].title;
+      quizBox.appendChild(question);
+
+      var choice1 = document.createElement("button");
+      choice1.setAttribute("type", "button");
+      choice1.setAttribute("class", "btn btn-secondary");
+      choice1.textContent = questions[i].choices[0];
+      quizBox.appendChild(choice1);
+      var enter1 = document.createElement("br");
+      quizBox.appendChild(enter1);
+      
+      choice1.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        if (questions[i].choices[0] == questions[i].answer) {
+          score++;
+          i++;
+          quizWar(i);
+        } else {
+          quizTime = quizTime - 10;
+          i++;
+          quizWar(i);
+        }
+      });
+
+      var choice2 = document.createElement("button");
+      choice2.setAttribute("type", "button");
+      choice2.setAttribute("class", "btn btn-secondary");
+      choice2.textContent = questions[i].choices[1];
+      quizBox.appendChild(choice2);
+      var enter2 = document.createElement("br");
+      quizBox.appendChild(enter2);
+
+      choice2.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        if (questions[i].choices[1] == questions[i].answer) {
+          score++;
+          i++;
+          quizWar(i);
+        } else {
+          quizTime = quizTime - 10;
+          i++;
+          quizWar(i);
+        }
+      });
+
+      var choice3 = document.createElement("button");
+      choice3.setAttribute("type", "button");
+      choice3.setAttribute("class", "btn btn-secondary");
+      choice3.textContent = questions[i].choices[2];
+      quizBox.appendChild(choice3);
+      var enter3 = document.createElement("br");
+      quizBox.appendChild(enter3);
+
+      choice3.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        if (questions[i].choices[2] == questions[i].answer) {
+          score++;
+          i++;
+          quizWar(i);
+        } else {
+          quizTime = quizTime - 10;
+          i++;
+          quizWar(i);
+        }
+      });
+
+      var choice4 = document.createElement("button");
+      choice4.setAttribute("type", "button");
+      choice4.setAttribute("class", "btn btn-secondary");
+      choice4.textContent = questions[i].choices[3];
+      quizBox.appendChild(choice4);
+
+      choice4.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        if (questions[i].choices[3] == questions[i].answer) {
+          score++;
+          i++;
+          quizWar(i);
+        } else {
+          quizTime = quizTime - 10;
+          i++;
+          quizWar(i);
+        }
+      });
+    } else {
+      i++;
+      quizTime = 0;
+      quizBox.innerHTML = "";
+
+      result.setAttribute("class", "text-center");
+      result.textContent = "Final Score: " + score;
+      quizBox.appendChild(result);
+      
+      intitialInputDivDiv.setAttribute("class", "input-group mb-3");
+      quizBox.appendChild(intitialInputDivDiv);
+
+      intitialInput.setAttribute("type", "text");
+      intitialInput.setAttribute("class", "form-control");
+      intitialInput.setAttribute("placeholder", "Enter Initials");
+      intitialInput.setAttribute("aria-label", "Enter Initials");
+      intitialInput.setAttribute("aria-describedby", "button-addon2");
+      intitialInput.setAttribute("id", "initialInput");
+      intitialInputDivDiv.appendChild(intitialInput);
+
+      intitialInputDiv.setAttribute("class", "input-group-append");
+      intitialInputDivDiv.appendChild(intitialInputDiv);
+
+      intitialInputButton.setAttribute("class", "btn btn-secondary");
+      intitialInputButton.setAttribute("type", "button");
+      intitialInputButton.setAttribute("id", "button-addon2");
+      intitialInputButton.textContent ="Enter";
+      intitialInputDiv.appendChild(intitialInputButton);
+
+      intitialInputButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        initials = document.querySelector("#initialInput").value;
+        localStorage.setItem("initials", initials);
+        if(highscore !== null){
+          if (score > highscore) {
+            localStorage.setItem("highscore", score);
           }
         }
-      }
-    }
-    anticlock();
-  }
-
-  quizBox.innerHTML = "";
-  i++;
-
-  if(i < 5) {
-    var question = document.createElement("h3");
-    question.setAttribute("class", "text-center");
-    question.textContent = questions[i].title;
-    quizBox.appendChild(question);
-
-    var choice1 = document.createElement("button");
-    choice1.setAttribute("type", "button");
-    choice1.setAttribute("class", "btn btn-secondary");
-    choice1.textContent = questions[i].choices[0];
-    quizBox.appendChild(choice1);
-    var enter1 = document.createElement("br");
-    quizBox.appendChild(enter1);
-    
-    choice1.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      if (questions[i].choices[0] === questions[i].answer) {
-        choiceInput.appendChild(correctChoice);
-        score++;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      } else {
-        choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      }
-    });
-
-    var choice2 = document.createElement("button");
-    choice2.setAttribute("type", "button");
-    choice2.setAttribute("class", "btn btn-secondary");
-    choice2.textContent = questions[i].choices[1];
-    quizBox.appendChild(choice2);
-    var enter2 = document.createElement("br");
-    quizBox.appendChild(enter2);
-
-    choice2.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      if (questions[i].choices[1] === questions[i].answer) {
-        choiceInput.appendChild(correctChoice);
-        score++;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      } else {
-        choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      }
-    });
-
-    var choice3 = document.createElement("button");
-    choice3.setAttribute("type", "button");
-    choice3.setAttribute("class", "btn btn-secondary");
-    choice3.textContent = questions[i].choices[2];
-    quizBox.appendChild(choice3);
-    var enter3 = document.createElement("br");
-    quizBox.appendChild(enter3);
-
-    choice3.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      if (questions[i].choices[2] === questions[i].answer) {
-        choiceInput.appendChild(correctChoice);
-        score++;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      } else {
-        choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      }
-    });
-
-    var choice4 = document.createElement("button");
-    choice4.setAttribute("type", "button");
-    choice4.setAttribute("class", "btn btn-secondary");
-    choice4.textContent = questions[i].choices[3];
-    quizBox.appendChild(choice4);
-
-    choice4.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      if (questions[i].choices[3] === questions[i].answer) {
-        choiceInput.appendChild(correctChoice);
-        score++;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      } else {
-        choiceInput.appendChild(wrongChoice);
-        quizTime = quizTime - 10;
-        quizButton.textContent = "Next";
-        nextButton.appendChild(quizButton);
-      }
-    });
-
-    quizBox.appendChild(choiceInput);
-    quizBox.appendChild(nextButton);
-
-    nextButton.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      choiceInput.innerHTML = "";
-      nextButton.innerHTML = "";
-    });
-  } else {
-    quizTime = 0;
-    quizStart = 0;
-    quizBox.innerHTML = "";
-
-    result.setAttribute("class", "text-center");
-    result.textContent = "Final Score: " + score;
-    quizBox.appendChild(result);
-    
-    intitialInputDivDiv.setAttribute("class", "input-group mb-3");
-    quizBox.appendChild(intitialInputDivDiv);
-
-    intitialInput.setAttribute("type", "text");
-    intitialInput.setAttribute("class", "form-control");
-    intitialInput.setAttribute("placeholder", "Enter Initials");
-    intitialInput.setAttribute("aria-label", "Enter Initials");
-    intitialInput.setAttribute("aria-describedby", "button-addon2");
-    intitialInput.setAttribute("id", "initialInput");
-    intitialInputDivDiv.appendChild(intitialInput);
-
-    intitialInputDiv.setAttribute("class", "input-group-append");
-    intitialInputDivDiv.appendChild(intitialInputDiv);
-
-    intitialInputButton.setAttribute("class", "btn btn-secondary");
-    intitialInputButton.setAttribute("type", "button");
-    intitialInputButton.setAttribute("id", "button-addon2");
-    intitialInputButton.textContent ="Enter";
-    intitialInputDiv.appendChild(intitialInputButton);
-
-    intitialInputButton.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      initials = document.querySelector("#initialInput").value;
-      localStorage.setItem("initials", initials);
-      console.log(initials + ": " + score);
-      if(highscore !== null){
-        if (score > highscore) {
+        else{
           localStorage.setItem("highscore", score);
-          return;
         }
-      }
-      else{
-        localStorage.setItem("highscore", score);
-        return;
-      }
       });
+    }
   }
+  quizWar(i);
 });
 
 highscoreButton.addEventListener("click", function(event) {
   event.preventDefault();
 
+  clearInterval(interval);
+
   quizStart = 0;
 
   quizBox.innerHTML = "";
 
-  i = -1;
+  i = 0;
   score = 0;
 
   quizTime = 0;

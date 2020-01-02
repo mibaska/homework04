@@ -27,6 +27,18 @@
         imgObj.style.left = '0px';
       }
       window.onload = init;
+
+      function updateQuantity(val){
+      // Do something with `val`
+      val = val + 1;
+
+      console.log(val);
+
+      // And call it again with the value
+      if(val < 5){
+        updateQuantity(val);
+      }
+    }
    </script>
   </head>
   <body>
