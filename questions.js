@@ -42,9 +42,6 @@ correctChoice.textContent = "Correct!";
 var wrongChoice = document.createElement("p");
 wrongChoice.textContent = "Wrong!";
 
-var failMessage = document.createElement("p");
-failMessage.textContent = "Quiz Failed!";
-
 var choiceInput = document.createElement("div");
 
 var interval;
@@ -63,17 +60,6 @@ var intitialInputDiv = document.createElement("div");
 var intitialInputButton = document.createElement("button");
 var highscoreInitials = initials;
 
-var failure = document.createElement("button");
-failure.setAttribute("type", "button");
-failure.setAttribute("class", "btn btn-secondary");
-failure.textContent = "Click to Try Again";
-
-failure.addEventListener("click", function(event) {
-  event.preventDefault();
-  i = 6;
-  quizWar(i);
-});
-
 var quizStart = 0;
 
 quizButton.addEventListener("click", function(event) {
@@ -89,7 +75,6 @@ quizButton.addEventListener("click", function(event) {
             quizTime--;
             timer.textContent = "Time: " + quizTime;
           } else {
-            choiceInput.appendChild(failMessage);
             quizTime = 0;
             timer.textContent = "Time: 0";
             i = 6;
@@ -207,7 +192,7 @@ quizButton.addEventListener("click", function(event) {
       quizBox.appendChild(intitialInputDivDiv);
 
       intitialInput.setAttribute("type", "text");
-      intitialInput.setAttribute("class", "form-control");
+      intitialInput.setAttribute("class", "form-control w-25");
       intitialInput.setAttribute("placeholder", "Enter Initials");
       intitialInput.setAttribute("aria-label", "Enter Initials");
       intitialInput.setAttribute("aria-describedby", "button-addon2");
