@@ -86,6 +86,47 @@ quizButton.addEventListener("click", function(event) {
   }
   clock();
 
+  function endCard() {
+    result.setAttribute("class", "text-center");
+      result.textContent = "Final Score: " + score;
+      quizBox.appendChild(result);
+      
+      intitialInputDivDiv.setAttribute("class", "input-group mb-3");
+      quizBox.appendChild(intitialInputDivDiv);
+
+      intitialInput.setAttribute("type", "text");
+      intitialInput.setAttribute("class", "form-control w-25");
+      intitialInput.setAttribute("placeholder", "Enter Initials");
+      intitialInput.setAttribute("aria-label", "Enter Initials");
+      intitialInput.setAttribute("aria-describedby", "button-addon2");
+      intitialInput.setAttribute("id", "initialInput");
+      intitialInputDivDiv.appendChild(intitialInput);
+
+      intitialInputDiv.setAttribute("class", "input-group-append");
+      intitialInputDivDiv.appendChild(intitialInputDiv);
+
+      intitialInputButton.setAttribute("class", "btn btn-secondary");
+      intitialInputButton.setAttribute("type", "button");
+      intitialInputButton.setAttribute("id", "button-addon2");
+      intitialInputButton.textContent ="Enter";
+      intitialInputDiv.appendChild(intitialInputButton);
+
+      intitialInputButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        initials = document.querySelector("#initialInput").value;
+        localStorage.setItem("initials", initials);
+        if(highscore !== null){
+          if (score > highscore) {
+            localStorage.setItem("highscore", score);
+          }
+        }
+        else{
+          localStorage.setItem("highscore", score);
+        }
+      });
+  }
+
   function quizWar(i) {
     if(i < 5) {
       quizBox.innerHTML = "";
@@ -177,47 +218,9 @@ quizButton.addEventListener("click", function(event) {
       });
     } else {
       i++;
-      clearInterval(quizTime);
+      quizTime = 0;
       quizBox.innerHTML = "";
-
-      result.setAttribute("class", "text-center");
-      result.textContent = "Final Score: " + score;
-      quizBox.appendChild(result);
-      
-      intitialInputDivDiv.setAttribute("class", "input-group mb-3");
-      quizBox.appendChild(intitialInputDivDiv);
-
-      intitialInput.setAttribute("type", "text");
-      intitialInput.setAttribute("class", "form-control w-25");
-      intitialInput.setAttribute("placeholder", "Enter Initials");
-      intitialInput.setAttribute("aria-label", "Enter Initials");
-      intitialInput.setAttribute("aria-describedby", "button-addon2");
-      intitialInput.setAttribute("id", "initialInput");
-      intitialInputDivDiv.appendChild(intitialInput);
-
-      intitialInputDiv.setAttribute("class", "input-group-append");
-      intitialInputDivDiv.appendChild(intitialInputDiv);
-
-      intitialInputButton.setAttribute("class", "btn btn-secondary");
-      intitialInputButton.setAttribute("type", "button");
-      intitialInputButton.setAttribute("id", "button-addon2");
-      intitialInputButton.textContent ="Enter";
-      intitialInputDiv.appendChild(intitialInputButton);
-
-      intitialInputButton.addEventListener("click", function(event) {
-        event.preventDefault();
-
-        initials = document.querySelector("#initialInput").value;
-        localStorage.setItem("initials", initials);
-        if(highscore !== null){
-          if (score > highscore) {
-            localStorage.setItem("highscore", score);
-          }
-        }
-        else{
-          localStorage.setItem("highscore", score);
-        }
-      });
+      endCard();
     }
   }
   quizWar(i);
