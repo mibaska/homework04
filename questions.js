@@ -108,12 +108,11 @@ quizButton.addEventListener("click", function(event) {
         if (questions[i].choices[0] == questions[i].answer) {
           score++;
           i++;
-          quizWar(i);
         } else {
           quizTime = quizTime - 10;
           i++;
-          quizWar(i);
         }
+        quizWar(i);
       });
 
       var choice2 = document.createElement("button");
@@ -127,15 +126,14 @@ quizButton.addEventListener("click", function(event) {
       choice2.addEventListener("click", function(event) {
         event.preventDefault();
 
-        if (questions[i].choices[1] == questions[i].answer) {
+        if (questions[i].choices[0] == questions[i].answer) {
           score++;
           i++;
-          quizWar(i);
         } else {
           quizTime = quizTime - 10;
           i++;
-          quizWar(i);
         }
+        quizWar(i);
       });
 
       var choice3 = document.createElement("button");
@@ -149,15 +147,14 @@ quizButton.addEventListener("click", function(event) {
       choice3.addEventListener("click", function(event) {
         event.preventDefault();
 
-        if (questions[i].choices[2] == questions[i].answer) {
+        if (questions[i].choices[0] == questions[i].answer) {
           score++;
           i++;
-          quizWar(i);
         } else {
           quizTime = quizTime - 10;
           i++;
-          quizWar(i);
         }
+        quizWar(i);
       });
 
       var choice4 = document.createElement("button");
@@ -169,19 +166,18 @@ quizButton.addEventListener("click", function(event) {
       choice4.addEventListener("click", function(event) {
         event.preventDefault();
 
-        if (questions[i].choices[3] == questions[i].answer) {
+        if (questions[i].choices[0] == questions[i].answer) {
           score++;
           i++;
-          quizWar(i);
         } else {
           quizTime = quizTime - 10;
           i++;
-          quizWar(i);
         }
+        quizWar(i);
       });
     } else {
       i++;
-      quizTime = 0;
+      clearInterval(quizTime);
       quizBox.innerHTML = "";
 
       result.setAttribute("class", "text-center");

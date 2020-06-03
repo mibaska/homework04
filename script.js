@@ -36,20 +36,6 @@ var highscoreButton = document.querySelector("#highscoreButton");
 
 var quizBox = document.querySelector("#quizBox");
 
-//Quiz Prep
-  //Display Screen
-  //Initialize Everthing
-//Quiz Start
-  //Start Timer
-  //Ask a Question
-    //Present Question
-    //Collect Answer
-      //Grade Answer
-      //Move to Next Question
-//Quiz End
-  //Show Results
-  //Add Input
-
 quizButton.addEventListener("click", function(event) {
   event.preventDefault();
 
